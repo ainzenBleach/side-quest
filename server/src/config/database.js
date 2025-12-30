@@ -1,18 +1,18 @@
-// src/config/database.js
+//Criação das credenciais de conexão com o banco de dados | Sempre chamar quando pedir acesso ao servidor 
+
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
 // Criando a instância do Sequelize
-// Lembre-se: A porta aqui deve ser a do DOCKER EXTERNA (3307)
-const sequelize = new Sequelize(
-    process.env.DB_NAME,     // Nome do banco
-    process.env.DB_USER,     // Usuário
-    process.env.DB_PASS,     // Senha
+// As informações é pegas do arquivo .env
+
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS,     
     {
         host: process.env.DB_HOST,
-        dialect: 'mysql',
-        port: process.env.DB_PORT,
-    }
+        dialect:'mysql',
+        port:process.env.DB_PORT
+    } 
 );
+
 
 module.exports = sequelize;
