@@ -1,0 +1,28 @@
+.task-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.task-card:hover {
+    transform: translateY(-2px); /* Efeito de levantar ao passar o mouse */
+}
+
+.task-title {
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
+}
+
+/* Classes para controlar a cor do texto baseadas no status */
+.status-done {
+    color: green;
+    text-decoration: line-through;
+}
+
+.status-pending {
+    color: #e74c3c; /* Um vermelho bonito */
+}

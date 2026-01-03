@@ -1,0 +1,10 @@
+A modelagem do react agora será feito em conjunto com o vite:
+ - O vite seria um bundle (empacotador) que vai "Interpretar" o react e injetar ele no html
+ - O vite vai interpretar o arquivo jsx, e depois converter para o js mais antigo para que o 
+navegador consiga interpretar
+
+Hooks (ganchos) - useState (Redenizador de tela) | useEffect (Limitador da atuaçlização)
+
+O react em sua base é declarativo, transformando uma lista de dados numa lista de componentes visuais
+o react usa virtual DOM, sempre mantendo uma copia da tela na meoria, ao utilizar codigo externo ele 
+pode se quebrar.

@@ -1,3 +1,5 @@
+// *** Cria as interações que vamos ter com a(s) tabela(s) ***
+
 // Conexão com a tabela task | Sempre usar quando for interagir com a tabela
 const Task = require("../models/tabelaTask")
 

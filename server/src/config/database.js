@@ -1,3 +1,5 @@
+// *** Credencias de acesso ao banco ***
+
 //Criação das credenciais de conexão com o banco de dados | Sempre chamar quando pedir acesso ao servidor 
 
 const { Sequelize } = require('sequelize');

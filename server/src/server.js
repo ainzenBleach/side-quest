@@ -1,10 +1,12 @@
+// Controle de todo o servidor | Controle das rotas
 // Definindo a porta
 const PORT = process.env.PORT || 3001;
 
 // Importando as bibliotecas
 const express = require('express');
 const cors = require('cors');
-const routes = require('./routes/routes.js');
+
+// Configuração dos arquivos env.
 require('dotenv').config();
 
 // Inicializando o app
@@ -13,13 +15,16 @@ const app = express();
 app.use(cors()); // Libera acesso externo
 app.use(express.json()); // Permite que o servidor entenda JSON (dados que virão do React)
 
-//Rota teste
+// Rota teste
 app.get('/', (req, res) => {
     res.send('Servidor rodando com sucesso! 🚀');
 });
 
+// Criação da rota que criamos para as tasks
+const routes = require('./routes/routes.js');
 app.use("/api", routes)
 
+//Confirmando a porta do banco de dados
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });

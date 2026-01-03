@@ -1,3 +1,5 @@
+// *** Criacação e manipulação da tabela ***
+
 const { DataTypes } = require('sequelize');
 
 // Pegamos a credencial de conexão com o banco de dados
