@@ -1,19 +1,23 @@
 import './TaskItem.css';
-function TaskItem({task}){
+function TaskItem({task, onToggle, onDelete}){
     const statusClass = task.status ? 'status-done' : 'status-pending';
 
     return (
-        // 3. Usando as classes do CSS
-        <li className="task-card">
+        //Usando as classes do CSS
+        <li className="task-card" onClick={() => onToggle(task.id, task.status)}> 
             <h3 className={`task-title ${statusClass}`}>
                 {task.title}
             </h3>
             
-            <p>{task.description}</p>
+            <p className={statusClass}>{task.description}</p>
             
             <small className={statusClass}>
                 Status: {task.status ? "Concluída" : "Pendente"}
             </small>
+            <button onClick={(e) => {
+                e.stopPropagation();
+                onDelete(task.id);
+            }}>X</button>
         </li>
     );
 }
