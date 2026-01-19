@@ -1,19 +1,24 @@
-import { useState, useEffect } from 'react';
-import TaskItem from './TaskItem';
-import TaskForm from './TaskForm';
+//Components
+import TaskItem from './component/TaskItem';
+import TaskForm from './component/TaskForm';
+
+//Style
 import './App.css'
+
+//Hooks
+import { useState, useEffect } from 'react';
 
 function App() {
   const [task, setTask] = useState([]);
 
-  const createTask = async (title) => {
+  const createTask = async (title, describe) => {
       try {
         const response = await fetch("http://localhost:3001/api/tasks",{
           method:'POST',
           headers:{
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ title:title, description: "Tarefa criada pelo react" })
+          body: JSON.stringify({ title:title, description: describe })
         })   
       if(response.ok){
         const NewTask = await response.json();
