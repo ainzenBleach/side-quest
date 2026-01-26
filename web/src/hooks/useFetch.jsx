@@ -5,6 +5,10 @@ export const useFetch = (url) => {
     //Informações das tarefas
     const [data, setdata] = useState([])
 
+    //Atualização da task
+    const [idTask,setIdTask] = useState(null)
+    const [status,setStatus] = useState(null)    
+
     // Config fetch
     const [config, setConfig] = useState(null)
     const [method, setMethod] = useState(null)
@@ -27,6 +31,20 @@ export const useFetch = (url) => {
                 body: JSON.stringify(data)
             })
             setMethod(method)
+        }else if(method === "PUT"){
+            setIdTask(data.id)
+            setConfig({
+                method,
+                headers:{
+                'Content-Type': 'application/json'
+                },
+                body:
+                JSON.stringify({
+                    status: !data.status
+                })
+            })
+
+            setMethod(method)
         }
     }
 
@@ -42,6 +60,7 @@ export const useFetch = (url) => {
             } catch (error) {
                 setError("Houve algum erro ao carregar os dados")
             }
+            setLoading(false)
         }
         fetchData();
     },[url, callFetch])
@@ -49,14 +68,25 @@ export const useFetch = (url) => {
     useEffect(() => {
         
     const fetchRequest = async () => {
+
+        let json = null
+
         if(method === "POST"){
             const res = await fetch(url, config)        
-            const json = await res.json()  
-            setCallFetch(json)
-        }    
+            json = await res.json()
+        }else if(method === "PUT"){
+
+            const updateUrl = `${url}/${idTask}`
+
+            const res = await fetch(updateUrl, config)
+            json = await res.json()
+        }
+
+        setCallFetch(json)
     }
     fetchRequest()
     },[config, method, url])
 
     return {data, fetchConfig, loading, error}
 }
+

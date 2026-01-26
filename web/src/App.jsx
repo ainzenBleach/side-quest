@@ -25,29 +25,14 @@ function App() {
   }
 
   const toggleTask = async (id, status) => {
-      try {
-        const response = await fetch(`http://localhost:3001/api/tasks/${id}`, {
-          method: "PUT",
-          headers:{
-            'Content-Type': 'application/json'
-          },
-          body:
-            JSON.stringify({
-              status: !status
-            })
-        }
-      )
-      
-      if(response.ok){
-        setTask(task.map((taskAtual) =>{
-          return (taskAtual.id === id) ? 
-          {...taskAtual, status: !status}
-          : taskAtual
-        }))
+
+      const data = {
+        id,
+        status
       }
-      } catch (error) {
-        console.error("Falha na atualização", error)
-      }
+
+      fetchConfig(data, "PUT")
+
   }
 
   const deleteTask = async (id) => {
@@ -73,6 +58,7 @@ function App() {
         {/* Div para adicionar novas tarefas */}
         <TaskForm onAdd={create} />
         <div>
+          {loading && <p>Carregando dados...</p>}
               <ul>
                 {/* Utilizando o map para mapear as tarefas e criar os itens na list ordenada*/}
                 {tasks && tasks.map((task) => (
