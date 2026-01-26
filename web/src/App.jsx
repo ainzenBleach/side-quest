@@ -19,36 +19,25 @@ function App() {
       title,
       description
     }
-
     fetchConfig(task, "POST")
-    
   }
 
   const toggleTask = async (id, status) => {
-
       const data = {
         id,
         status
       }
-
       fetchConfig(data, "PUT")
 
   }
 
   const deleteTask = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/tasks/${id}`, {
-          method: "DELETE",
-        }
-      )
-      if(response.ok){
-        setTask(task.filter(task => task.id != id))
-      }
 
-    } 
-    catch (error) {
-      console.error("Falha na atualização", error)
+    const data = {
+      id
     }
+
+    fetchConfig(data, "DELETE")
   }
 
   return (

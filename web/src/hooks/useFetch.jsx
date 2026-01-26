@@ -45,6 +45,12 @@ export const useFetch = (url) => {
             })
 
             setMethod(method)
+        }else if (method === "DELETE"){
+            setIdTask(data.id)
+            setConfig({
+                method,
+            })  
+            setMethod(method)
         }
     }
 
@@ -75,11 +81,13 @@ export const useFetch = (url) => {
             const res = await fetch(url, config)        
             json = await res.json()
         }else if(method === "PUT"){
-
             const updateUrl = `${url}/${idTask}`
-
             const res = await fetch(updateUrl, config)
             json = await res.json()
+        }else if (method === "DELETE"){            
+            const deleteUrl = `${url}/${idTask}`;
+            const res = await fetch(deleteUrl, config);       
+            json = await res.json();
         }
 
         setCallFetch(json)
@@ -89,4 +97,3 @@ export const useFetch = (url) => {
 
     return {data, fetchConfig, loading, error}
 }
-
