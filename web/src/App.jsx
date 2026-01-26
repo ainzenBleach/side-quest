@@ -7,29 +7,21 @@ import './App.css'
 
 //Hooks
 import { useState, useEffect } from 'react';
+import { useFetch } from './hooks/useFetch';
 
 function App() {
-  const [task, setTask] = useState([]);
+  const url = "http://localhost:3001/api/tasks";
 
-  const createTask = async (title, describe) => {
-      try {
-        const response = await fetch("http://localhost:3001/api/tasks",{
-          method:'POST',
-          headers:{
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ title:title, description: describe })
-        })   
-      if(response.ok){
-        const NewTask = await response.json();
+  const {data:tasks,fetchConfig, loading, error} = useFetch(url)
 
-        setTask([...task, NewTask])
+  const create = (title, description) => {
+    const task = {
+      title,
+      description
+    }
 
-      }
-
-      } catch (error) {
-        console.error("Erro ao criar tarefa:", error)
-      }
+    fetchConfig(task, "POST")
+    
   }
 
   const toggleTask = async (id, status) => {
@@ -74,35 +66,20 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    console.log("Buscando os dados")
-
-    const fetchTask = async () => {
-      try{
-        const response = await fetch("http://localhost:3001/api/tasks");
-        const data = await response.json();
-        setTask(data);
-      } 
-      catch(error){
-        console.error("Erro de conexão:", error);
-    }
-
-    }
-    fetchTask();
-  }, [])
-
   return (
     <>
       <div>
         <h1>Gerenciador de tarefas</h1>
         {/* Div para adicionar novas tarefas */}
-        <TaskForm onAdd={createTask} />
-        <ul>
-          {/* Utilizando o map para mapear as tarefas e criar os itens na list ordenada*/}
-          {task.map(task => (
-            <TaskItem key={task.id} task={task} onToggle={toggleTask} onDelete={deleteTask}/>
-          ))}
-        </ul>
+        <TaskForm onAdd={create} />
+        <div>
+              <ul>
+                {/* Utilizando o map para mapear as tarefas e criar os itens na list ordenada*/}
+                {tasks && tasks.map((task) => (
+                  <TaskItem key={task.id} task={task} onToggle={toggleTask} onDelete={deleteTask}/>
+                ))}
+              </ul>
+        </div>
       </div>
     </>
   )
