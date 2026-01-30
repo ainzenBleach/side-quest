@@ -17,7 +17,7 @@ app.use(express.json()); // Permite que o servidor entenda JSON (dados que virã
 
 // Rota teste
 app.get('/', (req, res) => {
-    res.send('Servidor rodando com sucesso! 🚀');
+    res.send('Servidor rodando com sucesso!');
 });
 
 // Criação da rota que criamos para as tasks

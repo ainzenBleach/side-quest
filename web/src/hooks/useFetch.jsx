@@ -6,8 +6,7 @@ export const useFetch = (url) => {
     const [data, setdata] = useState([])
 
     //Atualização da task
-    const [idTask,setIdTask] = useState(null)
-    const [status,setStatus] = useState(null)    
+    const [idTask,setIdTask] = useState(null)   
 
     // Config fetch
     const [config, setConfig] = useState(null)
@@ -53,8 +52,6 @@ export const useFetch = (url) => {
             setMethod(method)
         }
     }
-
-
     // Pegar os dados das tarefas
     useEffect(() => {
         const fetchData = async () => {
