@@ -1,0 +1,21 @@
+nav{
+    border: 2px solid white;
+    width: 100vh;
+    display: flex;
+    padding: 10px;
+}
+
+.home{
+    border: 1px solid blue;
+    /* margin-right: 40vh; */
+    width: 60vh;
+    display: flex;
+    transform: translateX(5vh);
+}
+
+.pages{
+    border: 1px solid blue;
+    width: 80vh;
+    display: flex;
+    justify-content: space-around;
+}

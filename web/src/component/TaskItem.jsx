@@ -1,4 +1,4 @@
-import './TaskItem.css';
+import './CSS/TaskItem.css';
 function TaskItem({task, onToggle, onDelete}){
     const statusClass = task.status ? 'status-done' : 'status-pending';
 
