@@ -6,19 +6,18 @@ const Task = require("../models/tabelaTask")
 const taskController = {
     create: async(req, res) => {
         try{
-            const { title, description} = req.body
+            const { title, description,points} = req.body
 
-            if(!title){
-                return res.status(400).json({ error: "Titulo obrigatorio"})
-            }
+            if(!title) return res.status(400).json({ error: "Titulo obrigatorio"})
 
             const newTask = await Task.create({
                 title,
                 description,
-                status: false
+                status: false,
+                points
             })
 
-            return res.status(201).json(task);
+            return res.status(201).json(newTask);
         }
         catch(error){
             return res.status(400).json({ error: error.message })
@@ -31,28 +30,24 @@ const taskController = {
 
             return res.status(200).json(tasks);
         }
-        catch{
-            return res.status(400).json({ error: error.message });
+        catch(error){
+            return res.status(400).json({ error: error.message })
         }
     },
 
     delete: async(req, res) =>{
         try{
-
             const { id } = req.params;
-            
             const tasks = await Task.destroy({
                   where: {
                     id: id,
                   },
                 });
-            
-            
             return res.status(200).json(tasks);
         }
 
-        catch{
-            return res.status(400).json({error:message})
+        catch(error){
+            return res.status(400).json({ error: error.message })
         }
     },
 
@@ -76,8 +71,33 @@ const taskController = {
             return res.status(200).json(tasks);
         }
 
-        catch{
-            return res.status(400).json({error:message})
+        catch(error){
+            return res.status(400).json({ error: error.message })
+        }
+    },
+
+    updateState: async(req, res) => {
+
+        try{
+
+            const { id } = req.params;
+            
+            const { status } = req.body;
+            
+            const tasks = await Task.update(
+                { status },
+                {
+                    where: {
+                        id: id,
+                    },
+                },
+            );
+            
+            return res.status(200).json(tasks);
+        }
+
+        catch(error){
+            return res.status(400).json({ error: error.message })
         }
     }
 }

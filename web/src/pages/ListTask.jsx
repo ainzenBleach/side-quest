@@ -6,35 +6,65 @@ import TaskItem from '../component/TaskItem';
 import TaskForm from '../component/TaskForm';
 
 //Hooks
-import { useFetch } from '../hooks/useFetch';
+import api from "../hooks/axiosApi";
+import { useEffect, useState } from "react";
 
 const ListTask = () => {
- const url = "http://localhost:3001/api/tasks";
 
-  const {data:tasks,fetchConfig, loading, error} = useFetch(url)
+  const [tasks, setTasks] = useState([])
+  const [loading, setLoading] = useState(false)
 
-  const create = (title, description) => {
-    const task = {
-      title,
-      description
+  useEffect(()=>{
+    
+    async function pegarTaks(){
+      setLoading(true)
+      api.get("/api/tasks")
+      .then((res) => {
+        setTasks(res.data)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally( () =>{
+        setLoading(false)
+      }
+      )
+      
     }
-    fetchConfig(task, "POST")
+
+    pegarTaks()
+  },[])
+
+  const create = async (title, description, points) => {
+    try {
+          const task = {
+          title,
+          description,
+          points
+        }
+
+      await api.post("/api/tasks", task)
+      setTasks([...tasks, task])
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const toggleTask = async (id, status) => {
-      const data = {
-        id,
-        status
-      }
-      fetchConfig(data, "PUT")
-
+      api.put(`api/tasks/state/${id}`, {
+        status:!status
+      })
+      let novaLista = tasks.map((task) =>
+      task.id === id ? {
+      ...task, status:!status
+      } : task)
+      setTasks(novaLista)
   }
 
   const deleteTask = async (id) => {
-    const data = {
-      id
-    }
-    fetchConfig(data, "DELETE")
+    api.delete(`api/tasks/${id}`)
+    let novaLista = tasks.filter((task) => task.id !== id)
+    setTasks(novaLista)
   }
 
   return (

@@ -27,6 +27,10 @@ const Task = conexaoDB.define(
     status: {
         type: DataTypes.BOOLEAN, 
         defaultValue: false,     
+    },
+    points: {
+        type: DataTypes.INTEGER,
+        defaultValue:true
     }
 });
 

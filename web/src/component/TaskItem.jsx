@@ -9,6 +9,8 @@ function TaskItem({task, onToggle, onDelete}){
                 {task.title}
             </h3>
             
+            <p className={statusClass}>Points: {task.points}</p>
+
             <p className={statusClass}>{task.description}</p>
             
             <small className={statusClass}>
