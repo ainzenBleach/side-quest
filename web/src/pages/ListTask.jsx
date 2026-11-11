@@ -2,8 +2,8 @@
 import "./CSS/ListTask.css"
 
 //Components
-import TaskItem from '../component/TaskItem'; 
-import TaskForm from '../component/TaskForm';
+import TaskItem from '../component/comp_task/TaskItem';
+import TaskForm from '../component/comp_task/TaskForm';
 
 //Hooks
 import api from "../hooks/axiosApi";

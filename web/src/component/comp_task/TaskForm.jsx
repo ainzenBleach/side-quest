@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 //style
-import "./CSS/TaskForm.css";
+import "../CSS/TaskForm.css";
 
 function TaskForm ({onAdd}) {
     
@@ -31,7 +31,17 @@ function TaskForm ({onAdd}) {
             </label>
             <label>
                 <span>Points</span>
-                <input type="number" value={points} onChange={(e) => setpoints(e.target.value)} name="points"/>
+                <input type="number" value={points} onChange={(e) => setpoints(e.target.value)} name="points"/> <br /> 
+                
+                <div style={{display:"flex", gap:"10px", marginBottom:"1.5rem"}}>
+                <button onClick={() => setpoints(points - 10)}>-10</button> 
+                <button onClick={() => setpoints(points - 50)}>-50</button>
+                <button onClick={() => setpoints(points - 100)}>-100</button>
+                <button onClick={() => setpoints(0)}>0</button>
+                <button onClick={() => setpoints(points + 10)}>+10</button> 
+                <button onClick={() => setpoints(points + 50)}>+50</button>
+                <button onClick={() => setpoints(points + 100)}>+100</button>
+                </div>
             </label>
             <button type="submit">Adicionar tarefa</button>
         </form>

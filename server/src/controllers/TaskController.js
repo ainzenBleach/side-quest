@@ -4,7 +4,7 @@
 const Task = require("../models/tabelaTask")
 
 const taskController = {
-    create: async(req, res) => {
+    createTask: async(req, res) => {
         try{
             const { title, description,points} = req.body
 
@@ -24,7 +24,7 @@ const taskController = {
         }
     },
 
-    getall: async(req, res) => {
+    getallTask: async(req, res) => {
         try{
             const tasks = await Task.findAll();
 
@@ -35,7 +35,7 @@ const taskController = {
         }
     },
 
-    delete: async(req, res) =>{
+    deleteTask: async(req, res) =>{
         try{
             const { id } = req.params;
             const tasks = await Task.destroy({
@@ -51,7 +51,7 @@ const taskController = {
         }
     },
 
-    update: async(req, res) => {
+    updateTask: async(req, res) => {
 
         try{
 
@@ -76,7 +76,7 @@ const taskController = {
         }
     },
 
-    updateState: async(req, res) => {
+    updateStateTask: async(req, res) => {
 
         try{
 
@@ -103,35 +103,3 @@ const taskController = {
 }
 
 module.exports = taskController
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

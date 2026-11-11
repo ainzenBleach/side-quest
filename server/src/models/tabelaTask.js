@@ -30,8 +30,10 @@ const Task = conexaoDB.define(
     },
     points: {
         type: DataTypes.INTEGER,
-        defaultValue:true
+        defaultValue:0
     }
-});
+    }
+    
+);
 
 module.exports = Task;
