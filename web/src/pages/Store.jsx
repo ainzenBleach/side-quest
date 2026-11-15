@@ -1,33 +1,86 @@
-// //Style
-// import "./CSS/Store.css"
+//Style
+import "./CSS/Store.css"
 
-// //Components
-// import TaskForm from '../component/StoreForm';
-// import TaskItem from '../component/ProductItem'; 
+//Components
+import StoreForm from '../component/comp_store/StoreForm';
+import StoreItem from '../component/comp_store/ProductItem'; 
 
-// //Hooks
-// import api from "../hooks/axiosApi";
-// import { useEffect, useState } from "react";
+//Hooks
+import api from "../hooks/axiosApi";
+import { useEffect, useState } from "react";
 
-// const Store = () => {
+const Store = () => {
 
-//   const [products, setProducts] = useState([])
-//   const [loading, setLoading] = useState(false)
+  const [products, setProducts] = useState([])
+  const [loading, setLoading] = useState(false)
 
-//   return (
-//     <div>
+  useEffect(()=>{
+    async function pegarTaks(){
+      setLoading(true)
+      api.get("/api/store")
+      .then((res) => {
+        setProducts(res.data)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally( () =>{
+        setLoading(false)
+      }
+      )
+      
+    }
+    pegarTaks()
+  },[])
 
-//     </div>
-//   )
-// }
+  const create = async (title, description, cost_points) => {
+    try {
+          const product = {
+          title,
+          description,
+          cost_points
+        }
 
-// export default Store
+      await api.post("/api/store", product)
+      setProducts([...products, product])
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
-import React from 'react'
+  const toggleTask = async (id, status) => {
+      api.put(`api/store/state/${id}`, {
+        status:!status
+      })
+      let novaLista = products.map((product) =>
+      product.id === id ? {
+      ...product, status:!status
+      } : product)
+      setProducts(novaLista)
+  }
 
-function Store() {
+  const deleteTask = async (id) => {
+    api.delete(`api/store/${id}`)
+    let novaLista = products.filter((task) => task.id !== id)
+    setProducts(novaLista)
+  }
+
   return (
-    <div>Store</div>
+    <div>
+      
+      <h1>Loja de itens</h1>
+
+      <StoreForm onAdd={create}/>
+      {loading && <p>Carregando dados...</p>}
+      <ul>
+        {
+          products && products.map((product) => (
+            <StoreItem key={product.id} product={product} onToggle={toggleTask} onDelete={deleteTask}/>
+          ))
+        }
+      </ul>
+
+    </div>
   )
 }
 

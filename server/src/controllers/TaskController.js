@@ -1,6 +1,7 @@
 // *** Cria as interações que vamos ter com a(s) tabela(s) ***
 
 // Conexão com a tabela task | Sempre usar quando for interagir com a tabela
+const { where } = require("sequelize")
 const Task = require("../models/tabelaTask")
 
 const taskController = {
@@ -29,6 +30,23 @@ const taskController = {
             const tasks = await Task.findAll();
 
             return res.status(200).json(tasks);
+        }
+        catch(error){
+            return res.status(400).json({ error: error.message })
+        }
+    },
+
+    getallPoints: async (req, res) => {
+        try{
+            //select sum(points) as "pontos" from tasks where status = 1;
+            const points = await Task.sum(
+                'points',
+                {where:{
+                    status: 1
+                }}
+            );
+
+            return res.status(200).json({points:points});
         }
         catch(error){
             return res.status(400).json({ error: error.message })

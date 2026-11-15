@@ -8,6 +8,7 @@ const storeController = require("../controllers/StoreController");
 //Tasks
 routes.post("/tasks", taskController.createTask);
 routes.get("/tasks", taskController.getallTask)
+routes.get("/points", taskController.getallPoints)
 routes.put("/tasks/:id", taskController.updateTask)
 routes.put("/tasks/state/:id", taskController.updateStateTask)
 routes.delete("/tasks/:id", taskController.deleteTask)

@@ -34,13 +34,13 @@ function TaskForm ({onAdd}) {
                 <input type="number" value={points} onChange={(e) => setpoints(e.target.value)} name="points"/> <br /> 
                 
                 <div style={{display:"flex", gap:"10px", marginBottom:"1.5rem"}}>
-                <button onClick={() => setpoints(points - 10)}>-10</button> 
-                <button onClick={() => setpoints(points - 50)}>-50</button>
-                <button onClick={() => setpoints(points - 100)}>-100</button>
-                <button onClick={() => setpoints(0)}>0</button>
-                <button onClick={() => setpoints(points + 10)}>+10</button> 
-                <button onClick={() => setpoints(points + 50)}>+50</button>
-                <button onClick={() => setpoints(points + 100)}>+100</button>
+                <button type="button" onClick={() => setpoints(points - 10)}>-10</button> 
+                <button type="button" onClick={() => setpoints(points - 50)}>-50</button>
+                <button type="button" onClick={() => setpoints(points - 100)}>-100</button>
+                <button type="button" onClick={() => setpoints(0)}>0</button>
+                <button type="button" onClick={() => setpoints(points + 10)}>+10</button> 
+                <button type="button" onClick={() => setpoints(points + 50)}>+50</button>
+                <button type="button" onClick={() => setpoints(points + 100)}>+100</button>
                 </div>
             </label>
             <button type="submit">Adicionar tarefa</button>
