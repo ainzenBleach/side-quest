@@ -1,7 +1,7 @@
 // *** Cria as interações que vamos ter com a(s) tabela(s) ***
 
 // Conexão com a tabela task | Sempre usar quando for interagir com a tabela
-const { where } = require("sequelize")
+const { Op, where, fn, col } = require("sequelize")
 const Task = require("../models/tabelaTask")
 
 const taskController = {
@@ -27,7 +27,7 @@ const taskController = {
 
     getallTask: async(req, res) => {
         try{
-            const tasks = await Task.findAll();
+            const tasks = await Task.findAll({ order: [['createdAt', 'DESC']] });
 
             return res.status(200).json(tasks);
         }
@@ -47,6 +47,59 @@ const taskController = {
             );
 
             return res.status(200).json({points:points});
+        }
+        catch(error){
+            return res.status(400).json({ error: error.message })
+        }
+    },
+
+    getTaskMonth: async (req, res) => {
+        try{
+            const month = Number(req.params.month);
+            const year = Number(req.params.year);
+
+            if (!Number.isInteger(month) || month < 1 || month > 12 ||
+                !Number.isInteger(year) || year < 1) {
+                return res.status(400).json({ error: "Mês ou ano inválido." });
+            }
+
+            const tasks = await Task.findAll({
+                where: {
+                    [Op.and]: [
+                        where(fn("MONTH", col("createdAt")), month),
+                        where(fn("YEAR", col("createdAt")), year)
+                    ]
+                },
+                order: [['createdAt', 'DESC']]
+            });
+
+            return res.status(200).json(tasks);
+        }
+        catch(error){
+            return res.status(400).json({ error: error.message })
+        }
+    },
+
+    getTaskMonthAmount: async (req, res) => {
+        try{
+            const tasks = await Task.findAll({
+                attributes: [
+                    [fn("YEAR", col("createdAt")), "ano"],
+                    [fn("MONTH", col("createdAt")), "mes"],
+                    [fn("COUNT", col("id")), "total_itens"]
+                ],
+                group: [
+                    fn("YEAR", col("createdAt")),
+                    fn("MONTH", col("createdAt"))
+                ],
+                order: [
+                    [fn("YEAR", col("createdAt")), "ASC"],
+                    [fn("MONTH", col("createdAt")), "ASC"]
+                ],
+                raw: true
+            });
+
+            return res.status(200).json(tasks);
         }
         catch(error){
             return res.status(400).json({ error: error.message })

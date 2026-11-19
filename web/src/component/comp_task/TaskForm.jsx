@@ -1,13 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 //style
 import "../CSS/TaskForm.css";
+import api from "../../hooks/axiosApi";
 
-function TaskForm ({onAdd}) {
+function TaskForm ({onAdd, onFilter}) {
+
+    const [filtroData, setFiltroData] = useState({})
+    const [SelectData, setSelectData] = useState({
+    mes: [],
+    ano: []
+    })
     
     const [title, setTitle] = useState("")
     const [description, setdescription] = useState("")
     const [points, setpoints] = useState(0)
+
+    useEffect(()=>{
+
+        const data = new Date()
+
+        const mes = data.getMonth() + 1
+        const ano = data.getFullYear()
+       
+        async function monthAmount(){
+        api.get("api/tasks/month-amount")
+        .then((res)=>{
+
+            const data = res.data
+
+            const listaDataAno = [...new Set(data.map((i) => i.ano))]
+            const listaDatames = [...new Set(data.map((i) => i.mes))]
+
+            setSelectData({mes:listaDatames,ano:listaDataAno})
+        })
+        .catch((err)=>{
+            console.error(err) 
+        })
+        .finally(
+            setFiltroData({mes,ano})
+        )
+        }
+
+        monthAmount()
+
+    },[])
+
+    
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -43,7 +82,34 @@ function TaskForm ({onAdd}) {
                 <button type="button" onClick={() => setpoints(points + 100)}>+100</button>
                 </div>
             </label>
+
+            <label name="filtro" className={{display:"flex", gap:"1rem"}}>
+                <select onChange={(e)=> setFiltroData({...filtroData, ano:e.target.value})} name="ano" id="Ano">
+                    <option value={filtroData.ano} defaultChecked> - </option>
+                    {SelectData.ano.map((data) => {
+                        return(
+                            <option value={data} key={data}>{data}</option>
+                        )
+                    })}
+                </select>
+
+                <select onChange={(e)=> setFiltroData({...filtroData, mes:e.target.value})} name="mes" id="mes">
+                    <option value={filtroData.mes} defaultChecked> - </option>
+                    {SelectData.mes.map((data) => {
+                        return(
+                            <option value={data} key={data}>{data}</option>
+                        )
+                    })}
+                </select>
+            </label>
+
+            <div>
+                <button type="button" onClick={() => {onFilter(filtroData.mes, filtroData.ano)}}>Aplicar filtro</button>
+            </div>
+
             <button type="submit">Adicionar tarefa</button>
+            
+
         </form>
     )
 }

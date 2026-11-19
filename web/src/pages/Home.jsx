@@ -10,7 +10,7 @@ const Home = () => {
   useEffect(() => {
     api.get("/api/points")
     .then((res) => {
-      setPoints(res.data)
+      setPoints(res.data.points)
     })
     .catch((err) => {
       console.error(err)
@@ -19,6 +19,7 @@ const Home = () => {
       
     })
   },[])
+
   return (
     <div>
       <p>Meus pontos: {points}</p>

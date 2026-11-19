@@ -8,6 +8,8 @@ const storeController = require("../controllers/StoreController");
 //Tasks
 routes.post("/tasks", taskController.createTask);
 routes.get("/tasks", taskController.getallTask)
+routes.get("/tasks/month/:month/:year", taskController.getTaskMonth)
+routes.get("/tasks/month-amount", taskController.getTaskMonthAmount)
 routes.get("/points", taskController.getallPoints)
 routes.put("/tasks/:id", taskController.updateTask)
 routes.put("/tasks/state/:id", taskController.updateStateTask)

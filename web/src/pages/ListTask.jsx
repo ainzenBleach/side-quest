@@ -44,7 +44,7 @@ const ListTask = () => {
         }
 
       await api.post("/api/tasks", task)
-      setTasks([...tasks, task])
+      setTasks([task, ...tasks])
     } catch (error) {
       console.error(error)
     }
@@ -67,12 +67,27 @@ const ListTask = () => {
     setTasks(novaLista)
   }
 
+  const filterTask = async (mes, ano) => {
+      setLoading(true)
+      api.get(`api/tasks/month/${mes}/${ano}`)
+      .then((res)=> {
+        setTasks(res.data)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally( () =>{
+        setLoading(false)
+      }
+      )
+  }
+
   return (
     <>
       <div>
         <h1>Gerenciador de tarefas</h1>
         {/* Div para adicionar novas tarefas */}
-        <TaskForm onAdd={create} />
+        <TaskForm onAdd={create} onFilter={filterTask}/>
         <div>
           {loading && <p>Carregando dados...</p>}
               <ul>
