@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 
-function StoreForm({onAdd}) {
+function StoreForm({onAdd,onChangeCard}) {
       const [title, setTitle] = useState("")
       const [description, setdescription] = useState("")
       const [costPoints, setCostPoints] = useState(0)
@@ -14,10 +14,13 @@ function StoreForm({onAdd}) {
           setTitle("")
           setdescription("")
           setCostPoints(0)
+          onChangeCard()
       };
   
       return(
           <form action="" onSubmit={handleSubmit}>
+              
+              <button type="button" onClick={onChangeCard}>Voltar</button>
               <label>
                   <span>Title</span>
                   <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} name="title"/>

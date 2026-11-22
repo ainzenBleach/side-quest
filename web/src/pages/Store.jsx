@@ -2,8 +2,8 @@
 import "./CSS/Store.css"
 
 //Components
-import StoreForm from '../component/comp_store/StoreForm';
 import StoreItem from '../component/comp_store/ProductItem'; 
+import CardStore from '../component/comp_store/CardStore'
 
 //Hooks
 import api from "../hooks/axiosApi";
@@ -70,7 +70,7 @@ const Store = () => {
       
       <h1>Loja de itens</h1>
 
-      <StoreForm onAdd={create}/>
+      <CardStore create={create}/>
       {loading && <p>Carregando dados...</p>}
       <ul>
         {

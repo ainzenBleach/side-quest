@@ -3,44 +3,42 @@ import "./CSS/ListTask.css"
 
 //Components
 import TaskItem from '../component/comp_task/TaskItem';
-import TaskForm from '../component/comp_task/TaskForm';
+
 
 //Hooks
 import api from "../hooks/axiosApi";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import CardTask from "../component/comp_task/CardTask";
+import TaskFilter from "../component/comp_task/TaskFilter";
 
 const ListTask = () => {
 
   const [tasks, setTasks] = useState([])
   const [loading, setLoading] = useState(false)
 
-  useEffect(()=>{
-    
-    async function pegarTaks(){
-      setLoading(true)
-      api.get("/api/tasks")
-      .then((res) => {
-        setTasks(res.data)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-      .finally( () =>{
-        setLoading(false)
-      }
-      )
-      
+  const loadTasks = useCallback(async () => {
+    setLoading(true)
+    try {
+      const res = await api.get("/api/tasks")
+      setTasks(res.data)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
     }
+  }, [])
 
-    pegarTaks()
-  },[])
+  useEffect(() => {
+    loadTasks()
+  }, [loadTasks])
 
-  const create = async (title, description, points) => {
+  const create = async (title, description, points, createdAt) => {
     try {
           const task = {
           title,
           description,
-          points
+          points,
+          createdAt
         }
 
       await api.post("/api/tasks", task)
@@ -69,7 +67,7 @@ const ListTask = () => {
 
   const filterTask = async (mes, ano) => {
       setLoading(true)
-      api.get(`api/tasks/month/${mes}/${ano}`)
+      api.get(`/api/tasks/month/${mes}/${ano}`)
       .then((res)=> {
         setTasks(res.data)
       })
@@ -87,7 +85,8 @@ const ListTask = () => {
       <div>
         <h1>Gerenciador de tarefas</h1>
         {/* Div para adicionar novas tarefas */}
-        <TaskForm onAdd={create} onFilter={filterTask}/>
+        <CardTask create={create} />
+        <TaskFilter onFilter={filterTask} onClear={loadTasks}/>
         <div>
           {loading && <p>Carregando dados...</p>}
               <ul>

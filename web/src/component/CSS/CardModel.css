@@ -1,0 +1,13 @@
+.cardModel{
+    border: 1px solid black;
+    padding: 1rem 2rem;
+
+    width: 52rem;
+
+    border-radius: 1rem;
+    box-shadow: 8px 6px 5px black;
+
+    position: absolute;
+
+    background-color:#242424 ;
+}
