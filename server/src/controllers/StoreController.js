@@ -57,10 +57,16 @@ const StoreController = {
 
             const { id } = req.params;
             
-            const { title, status } = req.body;
-            
+            const { title, description, cost_points, status } = req.body;
+            const productData = {}
+
+            if (title !== undefined) productData.title = title
+            if (description !== undefined) productData.description = description
+            if (cost_points !== undefined) productData.cost_points = cost_points
+            if (status !== undefined) productData.status = status
+
             const Stores = await Store.update(
-                { title, status },
+                productData,
                 {
                     where: {
                         id: id,

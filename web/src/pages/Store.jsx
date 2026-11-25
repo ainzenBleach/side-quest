@@ -17,18 +17,17 @@ const Store = () => {
   useEffect(()=>{
     async function pegarTaks(){
       setLoading(true)
-      api.get("/api/store")
-      .then((res) => {
+      try {
+        const res = await api.get("/api/store")
+        if (!Array.isArray(res.data)) {
+          throw new Error("A API /api/store não retornou uma lista de produtos.")
+        }
         setProducts(res.data)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-      .finally( () =>{
+      } catch (err) {
+        console.error("Erro ao carregar produtos:", err)
+      } finally {
         setLoading(false)
       }
-      )
-      
     }
     pegarTaks()
   },[])
@@ -48,7 +47,7 @@ const Store = () => {
     }
   }
 
-  const toggleTask = async (id, status) => {
+  const toggleProduct = async (id, status) => {
       api.put(`api/store/state/${id}`, {
         status:!status
       })
@@ -59,10 +58,23 @@ const Store = () => {
       setProducts(novaLista)
   }
 
-  const deleteTask = async (id) => {
+  const deleteProduct = async (id) => {
     api.delete(`api/store/${id}`)
-    let novaLista = products.filter((task) => task.id !== id)
+    let novaLista = products.filter((Product) => Product.id !== id)
     setProducts(novaLista)
+  }
+  
+  const editProduct = async (id, data) => {
+    try {
+      await api.put(`/api/store/${id}`, data)
+      setProducts((currentProducts) =>
+        currentProducts.map((product) =>
+          product.id === id ? { ...product, ...data } : product
+        )
+      )
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -74,8 +86,8 @@ const Store = () => {
       {loading && <p>Carregando dados...</p>}
       <ul>
         {
-          products && products.map((product) => (
-            <StoreItem key={product.id} product={product} onToggle={toggleTask} onDelete={deleteTask}/>
+          products.map((product) => (
+            <StoreItem key={product.id} product={product} onToggle={toggleProduct} onDelete={deleteProduct} onEdit={editProduct}/>
           ))
         }
       </ul>
